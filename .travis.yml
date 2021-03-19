@@ -1,4 +1,7 @@
-sudo: required
+language: javascript
+os: linux
+dist: bionic
+
 services:
   - docker
 
