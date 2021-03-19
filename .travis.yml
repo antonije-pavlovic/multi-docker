@@ -10,9 +10,9 @@ script:
 
 after_success:
   - docker build -t antonije1/client ./client
-  - docker build -t antonije/nginx ./nginx
+  - docker build -t antonije1/nginx ./nginx
   - docker build -t antonije1/server ./server
-  - docker build -t antonije/worker ./worker
+  - docker build -t antonije1/worker ./worker
   # login into the docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" -- password-stdin
   # take those images and push them to docker hub
