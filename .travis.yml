@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t antonije1/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run antonije1/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t antonije1/client ./client
+  - docker build -t antonije/nginx ./nginx
+  - docker build -t antonije1/server ./server
+  - docker build -t antonije/worker ./worker
+  # login into the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" -- password-stdin
+  # take those images and push them to docker hub
+  - docker push antonije1/client
+  - docker push antonije1/nginx
+  - docker push antonije1/server
+  - docker push antonije1/worker
