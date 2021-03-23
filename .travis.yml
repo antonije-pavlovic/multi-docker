@@ -23,3 +23,16 @@ after_success:
   - docker push antonije1/nginx
   - docker push antonije1/server
   - docker push antonije1/worker
+
+deploy:
+  provider: elasticbeanstlk
+  region: us-east-2
+  app: multi-docker
+  env: MultiDocker-env
+  bucket_name: 	elasticbeanstalk-us-east-2-789455171878
+  bucket_path: docker-multi
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key:
+    secure: $AWS_SECRET_KEY
