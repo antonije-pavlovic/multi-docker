@@ -12,20 +12,21 @@ script:
   - docker run -e CI=true antonije1/react-test npm test
 
 after_success:
+  # create production images
   - docker build -t antonije1/client ./client
   - docker build -t antonije1/nginx ./nginx
   - docker build -t antonije1/server ./server
   - docker build -t antonije1/worker ./worker
-  # login into the docker CLI
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" -- password-stdin
-  # take those images and push them to docker hub
+  # login into the docker hub
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # push images to docker hub
   - docker push antonije1/client
   - docker push antonije1/nginx
   - docker push antonije1/server
   - docker push antonije1/worker
 
 deploy:
-  provider: elasticbeanstlk
+  provider: elasticbeanstalk
   region: 'us-east-2'
   app: 'multi-docker'
   env: 'MultiDocker-env'
